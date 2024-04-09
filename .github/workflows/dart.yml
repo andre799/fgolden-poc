@@ -41,7 +41,10 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: golden-test-results
-          path: |
-            /home/runner/work/fgolden-poc/test/golden/failures
-            /home/runner/work/fgolden-poc/test/golden/goldens
+          name: golden-test-failures
+          path: /home/runner/work/fgolden-poc/test/golden/failures/
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: golden-test-reference
+          path: /home/runner/work/fgolden-poc/test/golden/failures/
