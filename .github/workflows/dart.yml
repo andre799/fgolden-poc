@@ -36,6 +36,7 @@ jobs:
           status=$?
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
+          fi
 
           mkdir -p $GITHUB_WORKSPACE/test/golden/failures
 
