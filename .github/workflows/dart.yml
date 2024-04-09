@@ -41,7 +41,9 @@ jobs:
 
       - name: Get working directory
         run: |
-          echo "Working directory: $GITHUB_WORKSPACE"
+          find $GITHUB_WORKSPACE -type d | while read -r dir; do
+            echo "Folder: $dir"
+          done
 
       # - uses: actions/upload-artifact@v3
       #   with:
