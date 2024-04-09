@@ -54,16 +54,33 @@ jobs:
             golden-test-screenshots/.artifact
           event: ${{ github.event }}
 
-      - name: Open files
+      - name: Open files and folders
+        id: open_files_and_folders
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const url = '${{ steps.get-artifact-url.outputs.url }}';
+            const fs = require('fs');
+            const path = require('path');
             const window = require('electron').remote.getCurrentWindow();
-            window.open(url, {
-              show: true,
-              newWindow: true,
-              resizable: true,
-              maximizable: true
+
+            const targetDirectory = '/home/runner/work/fgolden-poc/fgolden-poc/test/golden/';
+
+            function openFileOrFolder(filePath) {
+              const url = `file://${filePath}`;
+              if (fs.statSync(filePath).isDirectory()) {
+                window.open(url, {
+                  show: true,
+                  newWindow: true,
+                  resizable: true,
+                  maximizable: true
+                });
+              } else {
+                window.open(url);
+              }
+            }
+
+            fs.readdirSync(targetDirectory).forEach(fileName => {
+              const filePath = path.join(targetDirectory, fileName);
+              openFileOrFolder(filePath);
             });
