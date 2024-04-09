@@ -42,14 +42,6 @@ jobs:
 
           chmod -R a+rx $GITHUB_WORKSPACE/test/golden
 
-      - name: Delay for file sync (optional)
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - run: |
-          import time
-          time.sleep(5)
-
       - uses: actions/upload-artifact@v3
         with:
           name: golden-test-failures
