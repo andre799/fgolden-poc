@@ -41,17 +41,8 @@ jobs:
           # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
           find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
 
-          # Upload dos arquivos PNG diretamente do diretório temporário
-          echo "Uploading PNG files from $GITHUB_WORKSPACE/golden_images:"
-          find $GITHUB_WORKSPACE/golden_images/ -type f -name "*.png" | while read -r file; do
-            name=$(basename "$file")
-            echo "Uploading $file as artifact"
-            uses: actions/upload-artifact@v3
-            with:
-              name: golden_image_$name
-              path: "$file"
-          done
-
+          # Execute o script para visualizar os arquivos PNG
+          ./visualize_golden_images.sh $GITHUB_WORKSPACE/golden_images
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
           fi
