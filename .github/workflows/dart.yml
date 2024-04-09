@@ -40,47 +40,12 @@ jobs:
           fi
           echo "Finish Workflow"
 
-      - name: Save files
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: golden-test-screenshots
           path: test/golden_test_output
 
-      # - name: Get files URL
-      #   uses: github/actions/get-artifact-url@v2
-      #   with:
-      #     name: golden-test-screenshots
-      #     path: |
-      #       golden-test-screenshots/.artifact
-      #     event: ${{ github.event }}
-
-      - name: Open files and folders
-        id: open_files_and_folders
-        uses: actions/github-script@v5
+      - uses: actions/download-artifact@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            const window = require('electron').remote.getCurrentWindow();
-
-            const targetDirectory = '/home/runner/work/fgolden-poc/fgolden-poc/test/golden/';
-
-            function openFileOrFolder(filePath) {
-              const url = `file://${filePath}`;
-              if (fs.statSync(filePath).isDirectory()) {
-                window.open(url, {
-                  show: true,
-                  newWindow: true,
-                  resizable: true,
-                  maximizable: true
-                });
-              } else {
-                window.open(url);
-              }
-            }
-
-            fs.readdirSync(targetDirectory).forEach(fileName => {
-              const filePath = path.join(targetDirectory, fileName);
-              openFileOrFolder(filePath);
-            });
+          name: golden-test-screenshots
+          path: test/golden_test_output
