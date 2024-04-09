@@ -1,0 +1,46 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      color:
+        description: 'Hex Color'
+        required: true
+        default: '#FFFFFF'
+      text:
+        description: 'Text'
+        required: true
+        default: 'Golden Tests, wow!'
+      alignment:
+        description: 'Alignment'
+        required: true
+        default: 'center'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2  # Adicionei esta linha para configurar o Flutter
+
+      - name: Install dependencies
+        run: dart pub get
+
+      # ... outras steps do seu workflow ...
+
+      - name: Analisar código do projeto
+        run: dart analyze
+
+      - name: Executar Golden Test com Argumentos  # Nome da step atualizado
+        run: flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
