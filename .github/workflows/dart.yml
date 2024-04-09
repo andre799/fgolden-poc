@@ -39,23 +39,23 @@ jobs:
           fi
           echo "Finish Workflow"
 
-      - name: Get working directory
-        run: |
-          find $GITHUB_WORKSPACE -type d | while read -r dir; do
-            echo "Folder: $dir"
-          done
+      # - name: Get working directory
+      #   run: |
+      #     find $GITHUB_WORKSPACE -type d | while read -r dir; do
+      #       echo "Folder: $dir"
+      #     done
 
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: golden-test-complete
       #     path: /home/runner/work/fgolden-poc/
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: golden-test-failures
-      #     path: /home/runner/work/fgolden-poc/test/golden/failures/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: golden-test-failures
+          path: $GITHUB_WORKSPACE/test/golden/failures/
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: golden-test-reference
-      #     path: /home/runner/work/fgolden-poc/test/golden/goldens/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: golden-test-reference
+          path: $GITHUB_WORKSPACE/test/golden/goldens/
