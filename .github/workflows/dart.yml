@@ -52,6 +52,14 @@ jobs:
 
           echo "Finish Workflow"
 
+      - name: Cache artifacts
+        uses: actions/cache@v3
+        with:
+          path: $GITHUB_WORKSPACE/test/golden
+          key: ${{ runner.os }}-golden-artifacts-${{ hashFiles('**/test/golden/**/*.png') }}
+          restore-keys: |
+            ${{ runner.os }}-golden-artifacts-
+
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: golden-test-failures
