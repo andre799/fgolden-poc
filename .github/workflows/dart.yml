@@ -35,8 +35,11 @@ jobs:
           flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
           status=$?
 
-          find $GITHUB_WORKSPACE -type d | while read -r dir; do
+          find $GITHUB_WORKSPACE/test/ -type d | while read -r dir; do
             echo "Folder: $dir"
+            find "$dir" -type f | while read -r file; do
+              echo "  File: $file"
+            done
           done
 
           if [ "$status" -ne 0 ]; then
