@@ -32,15 +32,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2  # Adicionei esta linha para configurar o Flutter
+      - uses: subosito/flutter-action@v2
 
       - name: Install dependencies
         run: dart pub get
 
-      # ... outras steps do seu workflow ...
-
       - name: Analisar código do projeto
         run: dart analyze
 
-      - name: Executar Golden Test com Argumentos  # Nome da step atualizado
+      - name: Execute golden Tests 
         run: flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+
+      - name: Saving Screenshots
+        run: |
+          cp -r test/golden_test_output/* golden_test_output/
