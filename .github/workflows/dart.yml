@@ -1,20 +1,9 @@
-name: Dart 
+name: Dart
 
 on:
   workflow_dispatch:
     inputs:
-      color:
-        description: 'Hex Color'
-        required: true
-        default: '#fece23'
-      text:
-        description: 'Text'
-        required: true
-        default: 'Golden Tests, wow!'
-      alignment:
-        description: 'Alignment'
-        required: true
-        default: 'center'
+      ...  # (inputs definitions)
 
 jobs:
   build:
@@ -37,18 +26,18 @@ jobs:
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
           fi
-          echo "Finish Workflow"
 
-      # - name: Get working directory
-      #   run: |
-      #     find $GITHUB_WORKSPACE -type d | while read -r dir; do
-      #       echo "Folder: $dir"
-      #     done
+          mkdir -p $GITHUB_WORKSPACE/test/golden/failures
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: golden-test-complete
-      #     path: /home/runner/work/fgolden-poc/
+          chmod -R a+rx $GITHUB_WORKSPACE/test/golden
+
+      - name: Delay for file sync (optional)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: |
+          import time
+          time.sleep(5)
 
       - uses: actions/upload-artifact@v3
         with:
