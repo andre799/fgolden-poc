@@ -39,6 +39,12 @@ jobs:
             echo "Folder: $dir"
             find "$dir" -type f | while read -r file; do
               echo "  File: $file"
+              if [[ $file == *.png ]]; then
+                echo "Uploading $file as artifact"
+                name=$(basename "$file")
+                mv "$file" "$GITHUB_WORKSPACE/$name"
+                echo "::set-output name=artifact::$name"
+              fi
             done
           done
 
@@ -47,6 +53,13 @@ jobs:
           fi
 
           echo "Finish Workflow"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: golden_images
+          path: $GITHUB_WORKSPACE/*.png
+          
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: golden-test-failures
