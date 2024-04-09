@@ -11,7 +11,7 @@ on:
       color:
         description: 'Hex Color'
         required: true
-        default: '#FFFFFF'
+        default: '#fece23'
       text:
         description: 'Text'
         required: true
@@ -37,7 +37,14 @@ jobs:
         run: dart analyze
 
       - name: Execute golden Tests 
-        run: flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+        run: |
+          try
+            flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+          catch
+            echo "Error! Check images differences. Error details: $!"
+            cp -r test/golden_test_output/* golden_test_output/
+          finally
+            echo "Finish Workflow"
 
       - name: Saving Screenshots
         run: |

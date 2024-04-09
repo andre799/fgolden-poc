@@ -52,6 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Color? get invertColor {
+    if (colorFromHex == null) return null;
+
+    return Color.fromARGB(
+      colorFromHex!.alpha,
+      255 - colorFromHex!.red,
+      255 - colorFromHex!.green,
+      255 - colorFromHex!.blue,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 margin: const EdgeInsets.all(8),
                 decoration: BoxDecoration(color: colorFromHex, borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(color: invertColor, borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
               ),
             ),
             Expanded(

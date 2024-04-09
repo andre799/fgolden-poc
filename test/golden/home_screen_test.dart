@@ -14,9 +14,9 @@ void main() {
       ..addScenario(
         name: 'Golden Comparation Test',
         widget: const HomeScreen(
-          text: String.fromEnvironment('text'),
-          hexColor: String.fromEnvironment('color'),
-          iconAlignment: String.fromEnvironment('alignment'),
+          text: String.fromEnvironment('text', defaultValue: 'Golden Tests, wow!'),
+          hexColor: String.fromEnvironment('color', defaultValue: '#fece23'),
+          iconAlignment: String.fromEnvironment('alignment', defaultValue: 'center'),
         ),
       );
 
