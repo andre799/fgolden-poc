@@ -39,7 +39,7 @@ jobs:
       - name: Execute golden Tests
         run: |
           set +e  # Desabilitar saída imediata por erros
-          flutter test test/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+          flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
           status=$?  # Salvar resultado da execução
 
           if [ "$status" -ne 0 ]; then
