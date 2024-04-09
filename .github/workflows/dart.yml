@@ -40,12 +40,7 @@ jobs:
           fi
           echo "Finish Workflow"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: golden-test-screenshots
-          path: test/golden_test_output
-
       - uses: actions/download-artifact@v3
         with:
-          name: golden-test-screenshots
-          path: test/golden_test_output
+          name: golden-test-failures
+          path: test/golden/failures
