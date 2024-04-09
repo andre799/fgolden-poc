@@ -35,9 +35,17 @@ jobs:
           flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
           status=$?
 
+          # Crie um diretório temporário para armazenar os arquivos PNG
           mkdir golden_images
 
+          # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
           find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
+
+          # Liste os arquivos PNG encontrados no diretório temporário
+          echo "Listing PNG files in $GITHUB_WORKSPACE/golden_images:"
+          find $GITHUB_WORKSPACE/golden_images/ -type f -name "*.png" | while read -r file; do
+            echo "  $file"
+          done
 
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
@@ -50,9 +58,11 @@ jobs:
         with:
           name: golden_images
           path: $GITHUB_WORKSPACE/golden_images/
-      
+
+      # Remova o diretório temporário após o upload
       - name: Cleanup temporary directory
         run: rm -rf $GITHUB_WORKSPACE/golden_images
+
 
 
       # - uses: actions/upload-artifact@v3
