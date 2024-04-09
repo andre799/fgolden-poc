@@ -32,15 +32,14 @@ jobs:
       - name: Execute golden Tests
         run: |
           set +e
-          flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
-          status=$?
+          flutter test test/golden/home_screen_test.dart --dart-define="color=<span class="math-inline">\{\{ github\.event\.inputs\.color \}\}" \-\-dart\-define\="text\=</span>{{ github.event.inputs.text }}" --dart-define="alignment=<span class="math-inline">\{\{ github\.event\.inputs\.alignment \}\}"
+status\=</span>?
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
-            cp -r test/golden_test_output/* golden_output/
           fi
           echo "Finish Workflow"
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: golden-test-failures
-          path: test/golden/failures
+          path: /home/runner/work/fgolden-poc/
