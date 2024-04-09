@@ -35,18 +35,9 @@ jobs:
           flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
           status=$?
 
-          find $GITHUB_WORKSPACE/test/ -type d | while read -r dir; do
-            echo "Folder: $dir"
-            find "$dir" -type f | while read -r file; do
-              echo "  File: $file"
-              if [[ $file == *.png ]]; then
-                echo "Uploading $file as artifact"
-                name=$(basename "$file")
-                mv "$file" "$GITHUB_WORKSPACE/$name"
-                echo "::set-output name=artifact::$name"
-              fi
-            done
-          done
+          mkdir golden_images
+
+          find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
 
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
@@ -58,8 +49,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: golden_images
-          path: $GITHUB_WORKSPACE/*.png
-          
+          path: $GITHUB_WORKSPACE/golden_images/
+      
+      - name: Cleanup temporary directory
+        run: rm -rf $GITHUB_WORKSPACE/golden_images
+
+
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: golden-test-failures
