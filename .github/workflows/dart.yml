@@ -33,19 +33,25 @@ jobs:
       - name: Install dependencies
         run: dart pub get
 
-      - name: Analisar código do projeto
+      - name: Analyze project
         run: dart analyze
 
-      - name: Execute golden Tests 
+      - name: Execute golden Tests
         run: |
-          try
-            flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
-          catch
-            echo "Error! Check images differences. Error details: $!"
-            cp -r test/golden_test_output/* golden_test_output/
-          finally
-            echo "Finish Workflow"
+          set +e  # Desabilitar saída imediata por erros
+          flutter test test/golden_tests.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+          status=$?  # Salvar resultado da execução
 
-      - name: Saving Screenshots
-        run: |
-          cp -r test/golden_test_output/* golden_test_output/
+          if [ "$status" -ne 0 ]; then
+            echo "Erro! Check images differences. Exit code: $status"
+            cp -r test/golden_test_output/* golden_output/  # Corrige o caminho de destino
+          fi
+
+          echo "Finish Workflow"
+
+      - name: Enviar screenshots (se teste bem-sucedido)
+        uses: actions/upload-artifact@v3
+        with:
+          name: golden-test-screenshots
+          path: golden_output  # Corrigi o caminho da origem
+          if: success()
