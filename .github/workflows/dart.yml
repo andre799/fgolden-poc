@@ -32,8 +32,8 @@ jobs:
       - name: Execute golden Tests
         run: |
           set +e
-          flutter test test/golden/home_screen_test.dart --dart-define="color=<span class="math-inline">\{\{ github\.event\.inputs\.color \}\}" \-\-dart\-define\="text\=</span>{{ github.event.inputs.text }}" --dart-define="alignment=<span class="math-inline">\{\{ github\.event\.inputs\.alignment \}\}"
-status\=</span>?
+          flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+          status=$?
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
           fi
