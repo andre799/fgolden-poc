@@ -41,9 +41,8 @@ jobs:
           # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
           find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
 
-          # Liste os arquivos PNG encontrados no diretório temporário
           echo "Listing PNG files in $GITHUB_WORKSPACE/golden_images:"
-          find $GITHUB_WORKSPACE/golden_images/ -type f -name "*.png" | while read -r file; do
+          find $GITHUB_WORKSPACE/golden_images/ -type f -name "*.png" -print | while read -r file; do
             echo "  $file"
           done
 
@@ -58,6 +57,7 @@ jobs:
         with:
           name: golden_images
           path: $GITHUB_WORKSPACE/golden_images/
+          recursive: true
 
       # Remova o diretório temporário após o upload
       - name: Cleanup temporary directory
