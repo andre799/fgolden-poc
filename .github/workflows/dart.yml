@@ -39,17 +39,21 @@ jobs:
           fi
           echo "Finish Workflow"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: golden-test-complete
-          path: /home/runner/work/fgolden-poc/
+      - name: Get working directory
+        run: |
+          echo "Working directory: $GITHUB_WORKSPACE"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: golden-test-failures
-          path: /home/runner/work/fgolden-poc/test/golden/failures/
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: golden-test-complete
+      #     path: /home/runner/work/fgolden-poc/
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: golden-test-reference
-          path: /home/runner/work/fgolden-poc/test/golden/goldens/
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: golden-test-failures
+      #     path: /home/runner/work/fgolden-poc/test/golden/failures/
+
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: golden-test-reference
+      #     path: /home/runner/work/fgolden-poc/test/golden/goldens/
