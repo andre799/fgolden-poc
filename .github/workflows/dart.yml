@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+
       - name: Install dependencies
         run: dart pub get
 
@@ -41,15 +41,45 @@ jobs:
           # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
           find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
 
-          # Execute o script para visualizar os arquivos PNG
-          ./visualize_golden_images.sh $GITHUB_WORKSPACE/golden_images
+          # Função para listar os arquivos PNG
+          list_png_files() {
+            find "$golden_images_dir" -type f -name "*.png" | while read -r file; do
+              echo ">> Arquivo PNG: $file"
+            done
+          }
+
+          # Função para visualizar um arquivo PNG específico
+          visualize_png_file() {
+            png_file="$1"
+
+            # Verifique se o sistema possui o comando `display`
+            if command -v display >/dev/null 2>&1; then
+              # Use o comando `display` para visualizar a imagem (somente funciona em sistemas X11)
+              display "$png_file"
+            elif command -v open >/dev/null 2>&1; then
+              # Use o comando `open` para abrir a imagem no visualizador padrão (macOS)
+              open "$png_file"
+            else
+              echo ">> Erro: Nenhum visualizador de imagens disponível."
+            fi
+          }
+
+          # Diretório com os arquivos PNG
+          golden_images_dir="$GITHUB_WORKSPACE/golden_images"
+
+          # Liste os arquivos PNG
+          list_png_files "$golden_images_dir"
+
+          # Exemplo de visualização de um arquivo PNG específico
+          # (Substitua "Home_Screen.png" pelo nome do arquivo desejado)
+          visualize_png_file "$golden_images_dir/Home_Screen.png"
+
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
           fi
 
           echo "Finish Workflow"
 
-      # Remova o diretório temporário após o upload
       - name: Cleanup temporary directory
         run: rm -rf $GITHUB_WORKSPACE/golden_images
 
