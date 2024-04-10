@@ -23,35 +23,49 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
-      - name: Install dependencies
+      - name: Install Dependencies
         run: dart pub get
 
-      - name: Analyze project
+      - name: Analyze Project
         run: dart analyze
 
-      - name: Create base image (Default Props)
+      - name: Create base images - Update Goldens
         run: |
           set +e
           flutter test --update-goldens --dart-define="text=Golden Tests, wow!" --dart-define="color=#fece23" --dart-define="alignment=center"
           status=$?
 
-      - name: Execute golden Tests
+      - name: Golden Test - Screen
         run: |
           set +e
           flutter test test/golden/home_screen_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
           status=$?
-
-          # Crie um diretório temporário para armazenar os arquivos PNG
-          mkdir golden_images
-
-          # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
-          find ${{ github.workspace }}/test/ -type f -name "*.png" -exec mv {} ${{ github.workspace }}/golden_images/ \;
 
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
           fi
 
           echo "Finish Workflow"
+
+      - name: Golden Test - Widgets
+        run: |
+          set +e
+          flutter test test/golden/home_widgets_test.dart --dart-define="color=${{ github.event.inputs.color }}" --dart-define="text=${{ github.event.inputs.text }}" --dart-define="alignment=${{ github.event.inputs.alignment }}"
+          status=$?
+
+          if [ "$status" -ne 0 ]; then
+            echo "Error! Check images differences. Exit code: $status"
+          fi
+
+          echo "Finish Workflow"
+
+      - name: Upload Files
+        run: |
+          # Crie um diretório temporário para armazenar os arquivos PNG
+          mkdir golden_images
+
+          # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
+          find ${{ github.workspace }}/test/ -type f -name "*.png" -exec mv {} ${{ github.workspace }}/golden_images/ \;
 
       - name: List PNG files
         run: |

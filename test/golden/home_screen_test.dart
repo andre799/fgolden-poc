@@ -3,16 +3,11 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 
 void main() {
   testGoldens('HomeScreen Test', (tester) async {
-    // Args
-    // print('Color --> ${const String.fromEnvironment('color')}');
-    // print('Text --> ${const String.fromEnvironment('text')}');
-    // print('Alignment --> ${const String.fromEnvironment('alignment')}');
-
     //arrange
     await loadAppFonts();
     final builder = DeviceBuilder()
       ..addScenario(
-        name: 'Golden Comparation Test',
+        name: 'Screen Golden Test',
         widget: const HomeScreen(
           text: String.fromEnvironment('text', defaultValue: 'Golden Tests, wow!'),
           hexColor: String.fromEnvironment('color', defaultValue: '#fece23'),
