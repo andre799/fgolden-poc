@@ -32,7 +32,7 @@ jobs:
       - name: Create base image (Default Props)
         run: |
           set +e
-          flutter test --update-goldens --dart-define="text=Golden Tests, wow!" --dart-define="color=#000000" --dart-define="alignment=center"
+          flutter test --update-goldens --dart-define="text=Golden Tests, wow!" --dart-define="color=#fece23" --dart-define="alignment=center"
           status=$?
 
       - name: Execute golden Tests
