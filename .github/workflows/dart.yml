@@ -1,4 +1,4 @@
-name: Dart
+name: Flutter - Golden Tests
 
 on:
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
           mkdir golden_images
 
           # Mova os arquivos PNG para o diretório temporário, preservando a estrutura da origem
-          find $GITHUB_WORKSPACE/test/ -type f -name "*.png" -exec mv {} $GITHUB_WORKSPACE/golden_images/ \;
+          find ${{ github.workspace }}/test/ -type f -name "*.png" -exec mv {} ${{ github.workspace }}/golden_images/ \;
 
           if [ "$status" -ne 0 ]; then
             echo "Error! Check images differences. Exit code: $status"
@@ -47,9 +47,9 @@ jobs:
 
           echo "Finish Workflow"
 
-      - name: Encode PNG files to hexadecimal
+      - name: List PNG files
         run: |
-          for png_file in "$GITHUB_WORKSPACE/golden_images/"/*.png; do
+          for png_file in "${{ github.workspace }}/golden_images/"/*.png; do
             png_basename=$(basename "$png_file")
             echo "## PNG: $png_basename"
           done
@@ -58,4 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: golden-images
-          path: $GITHUB_WORKSPACE/golden_images/
+          path: ${{ github.workspace }}/golden_images/
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
