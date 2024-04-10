@@ -53,6 +53,6 @@ void main() {
     await tester.pumpWidgetBuilder(builder.build());
 
     //assert
-    await screenMatchesGolden(tester, 'Widets');
+    await screenMatchesGolden(tester, 'Widgets');
   });
 }
