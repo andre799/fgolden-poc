@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter_golden_tester/screens/home_screen.dart';
 import 'package:flutter_golden_tester/utils/data_utils.dart';
 import 'package:flutter_golden_tester/widgets/custom_container.dart';
 import 'package:flutter_golden_tester/widgets/custom_icon.dart';
