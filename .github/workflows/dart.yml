@@ -51,23 +51,11 @@ jobs:
         run: |
           for png_file in "$GITHUB_WORKSPACE/golden_images/"/*.png; do
             png_basename=$(basename "$png_file")
-            png_hex=$(xxd -p "$png_file")
             echo "## PNG: $png_basename"
-            echo "$png_hex"
           done
 
       - name: Upload PNG artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: golden-images
-          path: $GITHUB_WORKSPACE/golden_images
-
-      - name: Upload hexadecimal artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: golden-images-hex
-          path: |
-            for png_file in "$GITHUB_WORKSPACE/golden_images/"/*.png; do
-              png_basename=$(basename "$png_file")
-              echo "$png_file=$png_basename.hex"
-            done
+          path: $GITHUB_WORKSPACE/golden_images/
