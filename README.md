@@ -79,4 +79,11 @@ Ao executar este comando, você pode ajustar as propriedades `text`, `color` (em
 
 ---
 
+## **Arquivos dos testes**
+
+- [Teste de Tela](./test/golden/home_screen_test.dart)
+- [Teste de Widgets](./test/golden/home_screen_test.dart)
+
+---
+
 Este arquivo README fornece uma visão geral do projeto, explicando seu propósito, recursos e como acessar os resultados dos testes visuais gerados. Utilize os arquivos fornecidos para analisar as diferenças entre as renderizações e garantir a integridade visual da sua aplicação Flutter.
